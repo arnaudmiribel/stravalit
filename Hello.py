@@ -1,51 +1,32 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
 import streamlit as st
-from streamlit.logger import get_logger
 
-LOGGER = get_logger(__name__)
+import strava
 
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
+st.set_page_config(
+    page_title="Streamlit Activity Viewer for Strava",
+    page_icon=":circus_tent:",
+)
 
-    st.write("# Welcome to Streamlit! 👋")
+st.image("https://analytics.gssns.io/pixel.png")
 
-    st.sidebar.success("Select a demo above.")
+strava_header = strava.header()
 
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
+st.markdown(
     """
-    )
+    # :circus_tent: Streamlit Activity Viewer for Strava
+    This is a proof of concept of a [Streamlit](https://streamlit.io/) application that implements the [Strava API](https://developers.strava.com/) OAuth2 authentication flow.
+    The source code can be found at [my GitHub](https://github.com/AartGoossens/streamlit-activity-viewer) and is licensed under an [MIT license](https://github.com/AartGoossens/streamlit-activity-viewer/blob/main/LICENSE).
 
+    [Get in touch me with me](https://gssns.io/services/) if you want me to build you an application on top of this one, or a similar application.
+    """
+)
 
-if __name__ == "__main__":
-    run()
+strava_auth = strava.authenticate(header=strava_header, stop_if_unauthenticated=False)
+
+if strava_auth is None:
+    st.warning("You are not authenticated with Strava. Please log in.")
+    st.stop()
+
+for _ in range(10):
+    st.balloons()
